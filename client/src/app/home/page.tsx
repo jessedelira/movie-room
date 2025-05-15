@@ -2,10 +2,11 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
   const { user, token, logout, isLoading } = useAuth();
+  const [searchResult, setSearchResult] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -23,14 +24,21 @@ const Home = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const userId = formData.get("userId");
+	try {
     const response = await fetch(`${process.env.API_URL}/users/${userId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+	const data = await response.json();
+	setSearchResult(data);
+}
+catch (error) {
+	console.error("Error fetching user:", error);
+}
 
-    const data = await response.json();
+
   };
 
   if (isLoading || !user) return null;
@@ -88,6 +96,27 @@ const Home = () => {
               Find
             </button>
           </form>
+		  { searchResult && (
+					<div className="mt-4 p-4 border border-gray-300 rounded bg-gray-50">
+						<h2 className="text-lg font-semibold">Search Result:</h2>
+						<p className="mt-2">
+							<span className="font-semibold">User ID:</span> {searchResult.id}
+						</p>
+						<p>			
+							<span className="font-semibold">User Name:</span> {searchResult.name}
+						</p>
+						<p>
+							<span className="font-semibold">User Email:</span> {searchResult.email}
+						</p>
+						<p>		
+							<span className="font-semibold">User Created At:</span> {new Date(searchResult.createdAt).toLocaleDateString()}
+						</p>
+						<p>
+							<span className="font-semibold">User Updated At:</span> {new Date(searchResult.updatedAt).toLocaleDateString()}
+						</p>
+					</div>
+				)	
+		}
         </div>
       </div>
     </div>
