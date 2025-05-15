@@ -9,7 +9,6 @@ router.get("/", async (req, res): Promise<void> => {
 });
 
 router.get("/:id", async (req, res): Promise<void> => {
-  console.log("here");
   const user = await getUserById(req.params.id);
   if (user) {
     res.json(user);

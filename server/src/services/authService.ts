@@ -35,7 +35,6 @@ export const authenticateUser = async (
   password: string,
 ): Promise<{ user: User; token: string } | null> => {
   const user = await prisma.user.findUnique({ where: { email } });
-  console.log(user, "user");
   if (!user) return null;
   const valid = await argon2.verify(user.password, password);
   if (!valid) return null;
