@@ -1,0 +1,16 @@
+{
+  "name": "movie-room",
+  "version": "1.0.0",
+  "description": "Web application to manage movies groups and watch parties.",
+  "license": "ISC",
+  "author": "Jesse De Lira",
+  "scripts": {
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx",
+    "start": "node dist/index.js",
+    "test:watch": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "format": "prettier --write \"./!(.next)/**/*.{js,jsx,ts,tsx,json}\""
+  }
+}
